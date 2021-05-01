@@ -1,2 +1,14 @@
+.App {
+    padding: 25px;
+}
 
+.emailTable {
+    margin-top: 25px;
+}
+
+.unsubLink {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
 
