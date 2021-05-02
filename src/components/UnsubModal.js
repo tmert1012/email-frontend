@@ -1,5 +1,5 @@
-import {Button, Modal} from "react-bootstrap";
-import {useState} from "react";
+import {Button, Modal} from "react-bootstrap"
+import {useState} from "react"
 
 function UnsubModal({ show, handleClose, uuid }) {
     const [message, setMessage] = useState("")
@@ -18,6 +18,11 @@ function UnsubModal({ show, handleClose, uuid }) {
             .catch(error => console.log(error))
     }
 
+    const reset = () => {
+        setMessage('')
+        handleClose()
+    }
+
     return (
         <Modal className='unsubModal' show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -25,7 +30,7 @@ function UnsubModal({ show, handleClose, uuid }) {
             </Modal.Header>
             <Modal.Body>Do you wish to unsubscribe?</Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={reset}>
                     Close
                 </Button>
                 <Button variant="primary" onClick={submit} disabled={message}>
@@ -39,4 +44,4 @@ function UnsubModal({ show, handleClose, uuid }) {
 
 }
 
-export default UnsubModal;
+export default UnsubModal
