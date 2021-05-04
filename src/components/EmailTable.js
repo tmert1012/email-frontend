@@ -1,31 +1,25 @@
 import { Table } from "react-bootstrap"
 import { useState, useEffect } from 'react'
 import UnsubModal from "./UnsubModal"
+import { getRecords } from "../utils/network"
 
 function EmailTable({refresh}) {
     const [show, setShow] = useState(false)
     const [uuid, setUUID] = useState('')
     const [records, setRecords] = useState([])
+    const [message, setMessage] = useState("")
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
-    const getRecords = () => {
-        fetch(
-            `http://localhost:7000/email`,
-            {
-                method: "GET"
-            }
-        )
-            .then(res => res.json())
-            .then(res => {
-                setRecords(res)
-            })
-            .catch(error => console.log(error))
+    const handleGetRecords = () => {
+        getRecords()
+            .then(res => setRecords(res))
+            .catch(error => setMessage(error.message))
     }
 
     useEffect(() => {
-        getRecords()
+        handleGetRecords()
     }, [refresh])
 
     const handleUnsub = (uuid) => {
@@ -36,7 +30,7 @@ function EmailTable({refresh}) {
     const handleUnsubModalClose = () => {
         setUUID("")
         handleClose()
-        getRecords()
+        handleGetRecords()
     }
 
     return (
@@ -59,6 +53,7 @@ function EmailTable({refresh}) {
                     </tbody>
                 </Table>
             }
+            { message && message }
 
             <UnsubModal show={show} handleClose={handleUnsubModalClose} uuid={uuid} />
         </>

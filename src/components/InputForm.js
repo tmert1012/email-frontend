@@ -1,5 +1,6 @@
 import { Form, Button } from 'react-bootstrap'
 import { useState } from "react"
+import { save } from '../utils/network'
 
 function InputForm({refreshCallback}) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -15,22 +16,13 @@ function InputForm({refreshCallback}) {
     }
 
     const submit = () => {
-        const formData = new FormData()
-        formData.append('email', email)
-
-        fetch(
-            `http://localhost:7000/email`,
-            {
-                method: "POST",
-                body: formData
-            }
-            )
-                .then(res => {
-                    setMessage(`Email ${email} added!`)
-                    setEmail('')
-                    refreshCallback()
-                })
-                .catch(error => setMessage(error))
+        save(email)
+            .then(res => {
+                setMessage(`Email ${email} added!`)
+                setEmail('')
+                refreshCallback()
+            })
+            .catch(error => setMessage(error.message))
     }
 
     return (

@@ -1,21 +1,16 @@
 import {Button, Modal} from "react-bootstrap"
 import {useState} from "react"
+import {deleteRecord} from "../utils/network"
 
 function UnsubModal({ show, handleClose, uuid }) {
     const [message, setMessage] = useState("")
 
     const submit = () => {
-        fetch(
-            `http://localhost:7000/email/${uuid}`,
-            {
-                method: "DELETE"
-            }
-        )
-            //.then(res => res.json())
-            .then(res => {
+        deleteRecord(uuid)
+            .then(res =>
                 setMessage(`Email unsubscribed!`)
-            })
-            .catch(error => console.log(error))
+            )
+            .catch(error => setMessage(error.message))
     }
 
     const reset = () => {
